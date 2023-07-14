@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parcel Map</title>
+  <style>
+    #map {
+      height: 800px;
+      width: 100%;
+    }
+
+    #parcelList {
+        margin-top: 10px;
+        padding: 30px;
+        background-color: #f2f2f2;
+        list-style: decimal;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <ul id="parcelList"></ul>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=yourKeyhere&callback=initMap async defer></script>
+  <script>
+    function initMap() {
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 34.80438, lng: -92.2316}, // Set the initial map center coordinates nlr 34.7561° N, 92.2677° W
+        zoom: 18 // Set the initial map zoom level
+      });
+
+      // Add your code to fetch parcel data and pin them on the map
+      var parcelNumbers = [list of adress here] 
+
+      var parcelList = document.getElementById('parcelList');
+      
+
+      parcelNumbers.forEach(function(parcelNumber) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: parcelNumber }, function(results, status) {
+            if (status === 'OK') {
+                var location = results[0].geometry.location;
+                var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+        //title: parcelNumber // Set the parcel number as the marker title
+        
+                label: {
+                    text: parcelNumber,
+                    color: 'black',
+                    fontSize: '12px',
+                    fontwieght: 'bold',
+                    backgroundColor: 'black'
+                }
+        });
+
+        var listItem = document.createElement('li');
+        listItem.textContent = parcelNumber;
+        parcelList.appendChild(listItem);
+    } else {
+      console.log('Geocoding failed for parcel number: ');
+    }
+  });
+});
+    }
+  </script>
+</body>
+</html>
